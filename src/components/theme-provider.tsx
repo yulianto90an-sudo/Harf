@@ -1,0 +1,55 @@
+'use client';
+
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import type { ThemeMode } from '@/types/ui';
+
+interface ThemeContextValue {
+  theme: ThemeMode;
+  toggleTheme: () => void;
+  setTheme: (theme: ThemeMode) => void;
+}
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setThemeState] = useState<ThemeMode>('dark');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('harf-theme') as ThemeMode | null;
+    if (saved) {
+      setThemeState(saved);
+    }
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const setTheme = useCallback((t: ThemeMode) => {
+    setThemeState(t);
+    localStorage.setItem('harf-theme', t);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  }, [theme, setTheme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) {
+    throw new Error('useTheme must be used within ThemeProvider');
+  }
+  return ctx;
+}

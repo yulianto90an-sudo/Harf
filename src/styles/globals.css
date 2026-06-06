@@ -3,16 +3,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-bg-primary: #0B0B10;
-  --color-bg-secondary: #111118;
-  --color-bg-surface: #18181F;
-  --color-bg-elevated: #1E1E26;
-  --color-bg-card: #15151C;
+  --color-bg-primary: #0A0F1E;
+  --color-bg-surface: #111827;
+  --color-bg-elevated: #1E293B;
+  --color-bg-card: #1A2332;
 
-  --color-text-primary: #F1F1F5;
-  --color-text-secondary: #A1A1B0;
-  --color-text-tertiary: #6B6B80;
-  --color-text-disabled: #454560;
+  --color-text-primary: #FEFCE8;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
+  --color-text-disabled: #475569;
 
   --color-emerald-300: #6EE7B7;
   --color-emerald-400: #34D399;
@@ -20,18 +19,22 @@
   --color-emerald-600: #059669;
   --color-emerald-700: #047857;
 
+  --color-navy-700: #334155;
+  --color-navy-800: #1E293B;
+  --color-navy-900: #0F172A;
+
   --color-gold-300: #FCD34D;
-  --color-gold-400: #FBBF24;
-  --color-gold-500: #F59E0B;
+  --color-gold-400: #FACC15;
+  --color-gold-500: #EAB308;
 
   --color-success: #22C55E;
   --color-error: #EF4444;
   --color-warning: #F97316;
   --color-info: #3B82F6;
 
-  --font-sans: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
   --font-arabic: "Noto Naskh Arabic", "Amiri", "Traditional Arabic", serif;
-  --font-mono: "JetBrains Mono", "SF Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
 
   --text-arabic-xl: 48px;
   --text-arabic-xl--line-height: 1.1;
@@ -46,40 +49,40 @@
   --text-display-1: 28px;
   --text-display-1--line-height: 1.2;
   --text-display-1--font-weight: 800;
-  --text-display-1--letter-spacing: -0.03em;
+  --text-display-1--letter-spacing: -0.02em;
 
-  --text-display-2: 22px;
+  --text-display-2: 24px;
   --text-display-2--line-height: 1.3;
   --text-display-2--font-weight: 700;
-  --text-display-2--letter-spacing: -0.02em;
+  --text-display-2--letter-spacing: -0.01em;
 
-  --text-heading-1: 19px;
+  --text-heading-1: 20px;
   --text-heading-1--line-height: 1.3;
   --text-heading-1--font-weight: 700;
-  --text-heading-1--letter-spacing: -0.01em;
+  --text-heading-1--letter-spacing: -0.005em;
 
-  --text-heading-2: 17px;
+  --text-heading-2: 18px;
   --text-heading-2--line-height: 1.4;
   --text-heading-2--font-weight: 600;
 
-  --text-body: 15px;
+  --text-body: 16px;
   --text-body--line-height: 1.5;
   --text-body--font-weight: 400;
 
-  --text-body-bold: 15px;
+  --text-body-bold: 16px;
   --text-body-bold--line-height: 1.5;
   --text-body-bold--font-weight: 600;
 
-  --text-body-small: 13px;
+  --text-body-small: 14px;
   --text-body-small--line-height: 1.4;
   --text-body-small--letter-spacing: 0.01em;
 
-  --text-label: 12px;
+  --text-label: 13px;
   --text-label--line-height: 1.2;
   --text-label--font-weight: 600;
-  --text-label--letter-spacing: 0.03em;
+  --text-label--letter-spacing: 0.02em;
 
-  --text-micro: 11px;
+  --text-micro: 12px;
   --text-micro--line-height: 1.3;
   --text-micro--font-weight: 500;
   --text-micro--letter-spacing: 0.02em;
@@ -89,32 +92,33 @@
   --text-xp-value--font-weight: 800;
   --text-xp-value--letter-spacing: 0.02em;
 
-  --text-combo-number: 28px;
+  --text-combo-number: 32px;
   --text-combo-number--line-height: 1;
   --text-combo-number--font-weight: 900;
   --text-combo-number--letter-spacing: -0.02em;
 
   --radius-none: 0px;
   --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
-  --radius-2xl: 22px;
-  --radius-3xl: 28px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.2);
-  --shadow-xl: 0 20px 35px rgba(0, 0, 0, 0.4);
-  --shadow-2xl: 0 30px 55px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 30px 50px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-bottom-nav: 0 -4px 30px rgba(0, 0, 0, 0.4);
-  --shadow-glow-emerald: 0 0 20px rgba(16, 185, 129, 0.25);
-  --shadow-glow-gold: 0 0 20px rgba(251, 191, 36, 0.25);
-  --shadow-glow-combo: 0 0 30px rgba(251, 191, 36, 0.4);
-  --shadow-glow-streak: 0 0 25px rgba(249, 115, 22, 0.35);
+  --shadow-glow-emerald: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+  --shadow-glow-gold: 0 0 20px rgba(250, 204, 21, 0.3), 0 0 40px rgba(250, 204, 21, 0.1);
+  --shadow-glow-combo: 0 0 30px rgba(250, 204, 21, 0.5), 0 0 60px rgba(250, 204, 21, 0.2);
+  --shadow-glow-xp: 0 0 20px rgba(16, 185, 129, 0.4);
+  --shadow-glow-streak: 0 0 25px rgba(249, 115, 22, 0.4);
 
   --animate-skeleton-pulse: skeleton-pulse 1.5s ease-in-out infinite;
   --animate-float-up-down: float-up-down 3s ease-in-out infinite;
@@ -122,14 +126,11 @@
   --animate-xp-float: xp-float 0.8s ease-out forwards;
   --animate-pulse-glow-emerald: pulse-glow-emerald 2s ease-in-out infinite;
   --animate-pulse-glow-gold: pulse-glow-gold 2s ease-in-out infinite;
-
-  --spacing-13: 3.25rem;
-  --spacing-15: 3.75rem;
 }
 
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.8; }
 }
 
 @keyframes float-up-down {
@@ -146,17 +147,17 @@
 
 @keyframes xp-float {
   0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-40px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-40px) scale(1.2); }
 }
 
 @keyframes pulse-glow-emerald {
-  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-  50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
 }
 
 @keyframes pulse-glow-gold {
-  0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); }
-  50% { box-shadow: 0 0 35px rgba(251, 191, 36, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(250, 204, 21, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(250, 204, 21, 0.6); }
 }
 
 @utility max-w-app {
