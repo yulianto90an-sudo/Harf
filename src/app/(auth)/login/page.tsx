@@ -33,7 +33,7 @@ const fieldVariants = {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { continueAsGuest } = useAuthStore();
+  const { login, continueAsGuest } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -42,28 +42,23 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
-
     if (!email || !password) {
       setError('Email dan password wajib diisi');
-      setIsLoading(false);
       return;
     }
-
+    setIsLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1200));
+      await login(email, password);
       router.push('/');
-    } catch {
-      setError('Email atau password salah');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Email atau password salah');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSocialAuth = async (_provider: 'google' | 'apple') => {
-    setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    router.push('/');
+    setError('Social login belum tersedia');
   };
 
   const handleGuest = () => {

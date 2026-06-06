@@ -1,11 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { useProfileStore } from '@/stores/profileStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useGemsStore } from '@/stores/gemsStore';
 
 export function HomeHeader() {
   const profile = useProfileStore((s) => s.profile);
+  const user = useAuthStore((s) => s.user);
+  const { balance, loadBalance } = useGemsStore();
+
+  useEffect(() => {
+    if (user?.id) loadBalance(user.id);
+  }, [user?.id, loadBalance]);
+
   if (!profile) return null;
 
   const streak = profile.currentStreak;
@@ -38,6 +49,18 @@ export function HomeHeader() {
       </div>
 
       <div className="flex items-center gap-1.5">
+        <Link href="/top-up">
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            className="flex items-center gap-1.5 h-9 px-2.5 rounded-full bg-gold-400/10 border border-gold-400/20 text-gold-400"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#FBBF24">
+              <path d="M12 2l2.4 7.2H22l-6.4 4.8 2.4 7.2L12 16.8 6 21.2l2.4-7.2L2 9.2h7.6z" />
+            </svg>
+            <span className="text-micro font-bold">{balance}</span>
+          </motion.button>
+        </Link>
+
         <motion.button
           whileTap={{ scale: 0.9 }}
           className="relative w-9 h-9 rounded-full bg-bg-elevated border border-white/5

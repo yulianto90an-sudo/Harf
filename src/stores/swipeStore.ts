@@ -9,6 +9,10 @@ import { useAudioStore } from './audioStore';
 
 type AnswerState = 'none' | 'correct' | 'incorrect';
 
+function randomDirection(): 'left' | 'right' {
+  return Math.random() < 0.5 ? 'left' : 'right';
+}
+
 const MOCK_WORDS: Word[] = VOCAB_WORDS.slice(0, 30).map((v) => ({
   id: v.id,
   arabic: v.arabic,
@@ -17,6 +21,7 @@ const MOCK_WORDS: Word[] = VOCAB_WORDS.slice(0, 30).map((v) => ({
   category: v.category,
   difficulty: v.difficulty <= 1 ? 'easy' : 'medium' as const,
   audioUrl: undefined,
+  correctDirection: randomDirection(),
 }));
 
 interface SwipeState {
@@ -87,6 +92,7 @@ export const useSwipeStore = create<SwipeStore>()((set, get) => ({
             category: v.category,
             difficulty: v.difficulty <= 1 ? 'easy' : 'medium' as const,
             audioUrl: undefined,
+            correctDirection: randomDirection(),
           }));
       }
     }
@@ -105,6 +111,7 @@ export const useSwipeStore = create<SwipeStore>()((set, get) => ({
         category: '',
         difficulty: 'easy',
         audioUrl: w.audio_url ?? undefined,
+        correctDirection: randomDirection(),
       }));
       const sessionResult = await createSwipeSession(userId);
       set({
@@ -250,6 +257,7 @@ export const useSwipeStore = create<SwipeStore>()((set, get) => ({
             category: v.category,
             difficulty: v.difficulty <= 1 ? 'easy' : 'medium' as const,
             audioUrl: undefined,
+            correctDirection: randomDirection(),
           }));
       }
     }
@@ -287,6 +295,7 @@ export const useSwipeStore = create<SwipeStore>()((set, get) => ({
             category: v.category,
             difficulty: v.difficulty <= 1 ? 'easy' : 'medium' as const,
             audioUrl: undefined,
+            correctDirection: randomDirection(),
           }));
       } else {
         words = [...MOCK_WORDS];

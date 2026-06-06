@@ -814,6 +814,7 @@ export type Database = {
           coins: number | null
           created_at: string | null
           current_streak: number | null
+          gems: number | null
           highest_streak: number | null
           last_streak_date: string | null
           level: number | null
@@ -834,6 +835,7 @@ export type Database = {
           coins?: number | null
           created_at?: string | null
           current_streak?: number | null
+          gems?: number | null
           highest_streak?: number | null
           last_streak_date?: string | null
           level?: number | null
@@ -854,6 +856,7 @@ export type Database = {
           coins?: number | null
           created_at?: string | null
           current_streak?: number | null
+          gems?: number | null
           highest_streak?: number | null
           last_streak_date?: string | null
           level?: number | null
@@ -1497,6 +1500,53 @@ export type Database = {
           },
         ]
       }
+      top_up_requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          created_at: string | null
+          id: string
+          package: string
+          price_rp: number
+          proof_url: string
+          reviewed_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          created_at?: string | null
+          id?: string
+          package: string
+          price_rp: number
+          proof_url: string
+          reviewed_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string | null
+          id?: string
+          package?: string
+          price_rp?: number
+          proof_url?: string
+          reviewed_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "top_up_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       leaderboard_friends: {
@@ -1564,6 +1614,10 @@ export type Database = {
       insert_notification: {
         Args: { p_data?: Json; p_type: string; p_user_id: string }
         Returns: string
+      }
+      credit_gems: {
+        Args: { p_user_id: string; p_amount: number }
+        Returns: number
       }
       record_daily_activity: {
         Args: {

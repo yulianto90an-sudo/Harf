@@ -37,14 +37,18 @@ export function VocabCard({ word, index, isTop, stackOffset }: VocabCardProps) {
     [0.95, 1, 0.95],
   );
 
+  const dir = word.correctDirection ?? 'right';
+  const correctThreshold = dir === 'right' ? 300 : -300;
+  const wrongThreshold = dir === 'right' ? -300 : 300;
+
   const correctGlow = useTransform(
     x,
-    [0, SWIPE_THRESHOLD * 300, 300],
+    dir === 'right' ? [0, SWIPE_THRESHOLD * 300, 300] : [-300, -SWIPE_THRESHOLD * 300, 0],
     [0, 0, 1],
   );
   const wrongGlow = useTransform(
     x,
-    [-300, -SWIPE_THRESHOLD * 300, 0],
+    dir === 'right' ? [-300, -SWIPE_THRESHOLD * 300, 0] : [0, SWIPE_THRESHOLD * 300, 300],
     [1, 0, 0],
   );
 
@@ -52,11 +56,20 @@ export function VocabCard({ word, index, isTop, stackOffset }: VocabCardProps) {
     const xOffset = info.offset.x;
     const xVelocity = info.velocity.x;
     const threshold = SWIPE_THRESHOLD * (constraintsRef.current?.clientWidth ?? 300);
+    const dir = word.correctDirection ?? 'right';
 
-    if (xOffset > threshold || xVelocity > SWIPE_VELOCITY) {
-      swipeCorrect(word.id);
-    } else if (xOffset < -threshold || xVelocity < -SWIPE_VELOCITY) {
-      swipeIncorrect(word.id);
+    const swipedRight = xOffset > threshold || xVelocity > SWIPE_VELOCITY;
+    const swipedLeft = xOffset < -threshold || xVelocity < -SWIPE_VELOCITY;
+
+    if (swipedRight || swipedLeft) {
+      const isCorrect =
+        (dir === 'right' && swipedRight) ||
+        (dir === 'left' && swipedLeft);
+      if (isCorrect) {
+        swipeCorrect(word.id);
+      } else {
+        swipeIncorrect(word.id);
+      }
     }
   };
 
@@ -136,22 +149,41 @@ export function VocabCard({ word, index, isTop, stackOffset }: VocabCardProps) {
             >
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
-            <span className="text-micro text-text-tertiary">Geser ke kanan jika benar</span>
+            <span className="text-micro text-text-tertiary">Geser ke {word.correctDirection === 'left' ? 'kiri' : 'kanan'} jika benar</span>
           </div>
         </div>
 
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 left-4 bg-emerald-500 px-4 py-2 rounded-xl rotate-[-15deg] pointer-events-none"
-          style={{ opacity: correctGlow, scale: correctGlow }}
-        >
-          <span className="text-body-bold text-white font-bold tracking-wide">BENAR</span>
-        </motion.div>
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 right-4 bg-error px-4 py-2 rounded-xl rotate-[15deg] pointer-events-none"
-          style={{ opacity: wrongGlow, scale: wrongGlow }}
-        >
-          <span className="text-body-bold text-white font-bold tracking-wide">SALAH</span>
-        </motion.div>
+        {dir === 'right' ? (
+          <>
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 right-4 bg-emerald-500 px-4 py-2 rounded-xl rotate-[15deg] pointer-events-none"
+              style={{ opacity: correctGlow, scale: correctGlow }}
+            >
+              <span className="text-body-bold text-white font-bold tracking-wide">BENAR</span>
+            </motion.div>
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 left-4 bg-error px-4 py-2 rounded-xl rotate-[-15deg] pointer-events-none"
+              style={{ opacity: wrongGlow, scale: wrongGlow }}
+            >
+              <span className="text-body-bold text-white font-bold tracking-wide">SALAH</span>
+            </motion.div>
+          </>
+        ) : (
+          <>
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 left-4 bg-emerald-500 px-4 py-2 rounded-xl rotate-[-15deg] pointer-events-none"
+              style={{ opacity: correctGlow, scale: correctGlow }}
+            >
+              <span className="text-body-bold text-white font-bold tracking-wide">BENAR</span>
+            </motion.div>
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 right-4 bg-error px-4 py-2 rounded-xl rotate-[15deg] pointer-events-none"
+              style={{ opacity: wrongGlow, scale: wrongGlow }}
+            >
+              <span className="text-body-bold text-white font-bold tracking-wide">SALAH</span>
+            </motion.div>
+          </>
+        )}
       </motion.div>
     </div>
   );

@@ -290,6 +290,113 @@ export async function claimMissionReward(missionId: string, userId: string) {
   return ok(data);
 }
 
+// Gems
+export async function getGemsBalance(userId: string) {
+  const client = getClient();
+  const { data, error } = await client
+    .from('profiles')
+    .select('gems')
+    .eq('user_id', userId)
+    .single();
+  if (error) return fail(error.message);
+  return ok(data?.gems ?? 0);
+}
+
+export async function deductGems(userId: string, amount: number) {
+  const client = getClient();
+  const { data: profile } = await client
+    .from('profiles')
+    .select('gems')
+    .eq('user_id', userId)
+    .single();
+  if (!profile) return fail('Profile not found');
+  const currentGems = profile.gems ?? 0;
+  if (currentGems < amount) return fail('Insufficient gems');
+  const { data, error } = await client
+    .from('profiles')
+    .update({ gems: currentGems - amount })
+    .eq('user_id', userId)
+    .select('gems')
+    .single();
+  if (error) return fail(error.message);
+  return ok(data?.gems ?? 0);
+}
+
+export async function creditGems(userId: string, amount: number) {
+  const client = getClient();
+  const { data: profile } = await client
+    .from('profiles')
+    .select('gems')
+    .eq('user_id', userId)
+    .single();
+  if (!profile) return fail('Profile not found');
+  const currentGems = profile.gems ?? 0;
+  const { data, error } = await client
+    .from('profiles')
+    .update({ gems: currentGems + amount })
+    .eq('user_id', userId)
+    .select('gems')
+    .single();
+  if (error) return fail(error.message);
+  return ok(data?.gems ?? 0);
+}
+
+export async function createTopUpRequest(
+  userId: string,
+  pkg: 'starter' | 'popular' | 'whale',
+  amount: number,
+  priceRp: number,
+  proofUrl: string,
+) {
+  const client = getClient();
+  const { data, error } = await client
+    .from('top_up_requests')
+    .insert({
+      user_id: userId,
+      package: pkg,
+      amount,
+      price_rp: priceRp,
+      proof_url: proofUrl,
+    })
+    .select()
+    .single();
+  if (error) return fail(error.message);
+  return ok(data);
+}
+
+export async function getMyTopUpRequests(userId: string) {
+  const client = getClient();
+  const { data, error } = await client
+    .from('top_up_requests')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) return fail(error.message);
+  return ok(data);
+}
+
+export async function getAllTopUpRequests() {
+  const client = getClient();
+  const { data, error } = await client
+    .from('top_up_requests')
+    .select('*, user:user_id(username, avatar_url)')
+    .order('created_at', { ascending: false });
+  if (error) return fail(error.message);
+  return ok(data);
+}
+
+export async function rejectTopUpRequest(requestId: string, adminNotes?: string) {
+  const client = getClient();
+  const { data, error } = await client
+    .from('top_up_requests')
+    .update({ status: 'rejected', admin_notes: adminNotes ?? null, reviewed_at: new Date().toISOString() })
+    .eq('id', requestId)
+    .select()
+    .single();
+  if (error) return fail(error.message);
+  return ok(data);
+}
+
 // Streak
 export async function recordDailyActivity(
   userId: string,

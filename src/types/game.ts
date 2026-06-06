@@ -6,6 +6,7 @@ export interface Word {
   category: string;
   difficulty: 'easy' | 'medium' | 'hard';
   audioUrl?: string;
+  correctDirection?: 'left' | 'right';
 }
 
 export interface Profile {

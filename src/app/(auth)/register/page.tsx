@@ -46,7 +46,7 @@ const fieldVariants = {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { continueAsGuest } = useAuthStore();
+  const { register, continueAsGuest } = useAuthStore();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -77,10 +77,10 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1200));
+      await register(form.email, form.password, form.name);
       router.push('/onboarding');
-    } catch {
-      setError('Gagal daftar. Coba lagi.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Gagal daftar. Coba lagi.');
     } finally {
       setIsLoading(false);
     }
