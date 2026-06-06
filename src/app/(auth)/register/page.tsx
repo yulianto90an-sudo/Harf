@@ -46,7 +46,7 @@ const fieldVariants = {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { register, continueAsGuest } = useAuthStore();
+  const { login, continueAsGuest } = useAuthStore();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -77,8 +77,24 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await register(form.email, form.password, form.name);
-      router.push('/onboarding');
+      const { createClient } = await import('@/services/supabase/client');
+      const supabase = createClient();
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: { data: { display_name: form.name } },
+      });
+      if (signUpError) throw signUpError;
+
+      if (data.session) {
+        const { setUser, setSession } = useAuthStore.getState();
+        setUser(data.user);
+        setSession(data.session);
+        router.push('/onboarding');
+      } else {
+        await login(form.email, form.password);
+        router.push('/onboarding');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Gagal daftar. Coba lagi.');
     } finally {
