@@ -57,8 +57,19 @@ export default function LoginPage() {
     }
   };
 
-  const handleSocialAuth = async (_provider: 'google' | 'apple') => {
-    setError('Social login belum tersedia');
+  const handleSocialAuth = async (provider: 'google' | 'apple') => {
+    setError('');
+    setIsLoading(true);
+    try {
+      const { createClient } = await import('@/services/supabase/client');
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({ provider });
+      if (error) setError(error.message);
+    } catch {
+      setError('Gagal membuka Google login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGuest = () => {

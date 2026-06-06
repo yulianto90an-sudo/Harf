@@ -6,7 +6,11 @@ import { useAuthStore } from '@/stores/authStore';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { isAuthenticated, isGuest, isLoading } = useAuthStore();
+  const { isAuthenticated, isGuest, isLoading, initialize } = useAuthStore();
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !isGuest) {

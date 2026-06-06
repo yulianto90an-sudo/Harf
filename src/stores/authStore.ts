@@ -18,6 +18,7 @@ interface AuthActions {
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
   continueAsGuest: () => void;
+  initialize: () => Promise<void>;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -27,7 +28,7 @@ const initialState: AuthState = {
   session: null,
   isAuthenticated: false,
   isGuest: false,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -115,6 +116,27 @@ export const useAuthStore = create<AuthStore>()(
           user: null,
           session: null,
         }),
+
+      initialize: async () => {
+        try {
+          const { createClient } = await import('@/services/supabase/client');
+          const supabase = createClient();
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            set({
+              user: session.user,
+              session,
+              isAuthenticated: true,
+              isGuest: false,
+              isLoading: false,
+            });
+          } else {
+            set({ isLoading: false });
+          }
+        } catch {
+          set({ isLoading: false });
+        }
+      },
     }),
     {
       name: 'harf-auth',
