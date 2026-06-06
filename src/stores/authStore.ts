@@ -27,7 +27,7 @@ const initialState: AuthState = {
   session: null,
   isAuthenticated: false,
   isGuest: false,
-  isLoading: true,
+  isLoading: false,
 };
 
 export const useAuthStore = create<AuthStore>()(
